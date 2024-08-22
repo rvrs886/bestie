@@ -50,7 +50,6 @@ public class ScheduledEventService {
 		executorService.submit(() -> {
 			try {
 				ScheduledEvent scheduledEvent = new ScheduledEvent(scheduledEventDto);
-				Thread.sleep(20000);
 				scheduledEventRepository.save(scheduledEvent);
 				eventTask.finish(scheduledEvent, null, clock);
 			} catch (Exception ex) {

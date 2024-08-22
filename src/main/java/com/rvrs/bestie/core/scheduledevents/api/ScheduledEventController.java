@@ -15,8 +15,8 @@ import java.util.UUID;
 @RequestMapping("/scheduled-events")
 public class ScheduledEventController {
 
-	private final ScheduledEventTaskRepository scheduledEventTaskRepository;
-	private final ScheduledEventService scheduledEventService;
+	protected final ScheduledEventTaskRepository scheduledEventTaskRepository;
+	protected final ScheduledEventService scheduledEventService;
 
 	public ScheduledEventController(ScheduledEventTaskRepository scheduledEventTaskRepository,
 	                                ScheduledEventService scheduledEventService) {
@@ -29,9 +29,9 @@ public class ScheduledEventController {
 		return scheduledEventTaskRepository.findAll(pageable);
 	}
 
-	@GetMapping("/{id}")
-	public ScheduledEvent getScheduledEvent(@PathVariable UUID id) {
-		return scheduledEventService.getScheduledEventById(id);
+	@GetMapping("/{scheduledEventId}")
+	public ScheduledEvent getScheduledEvent(@PathVariable UUID scheduledEventId) {
+		return scheduledEventService.getScheduledEventById(scheduledEventId);
 	}
 
 	@PostMapping

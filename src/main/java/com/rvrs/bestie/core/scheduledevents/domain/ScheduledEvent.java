@@ -85,6 +85,10 @@ public class ScheduledEvent {
 		return type;
 	}
 
+	public Set<ParticipateRequest> getParticipateRequests() {
+		return participateRequests;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -94,13 +98,14 @@ public class ScheduledEvent {
 				Objects.equals(title, that.title) &&
 				Objects.equals(description, that.description) &&
 				Objects.equals(location, that.location) &&
-				Objects.equals(scheduledDateTime, that.scheduledDateTime)
-				&& type == that.type;
+				Objects.equals(scheduledDateTime, that.scheduledDateTime) &&
+				type == that.type &&
+				Objects.equals(participateRequests, that.participateRequests);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, title, description, location, scheduledDateTime, type);
+		return Objects.hash(id, title, description, location, scheduledDateTime, type, participateRequests);
 	}
 
 	@Override

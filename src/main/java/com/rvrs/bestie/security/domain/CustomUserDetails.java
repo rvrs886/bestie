@@ -6,12 +6,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 
-public class CustomerUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
-	private final Customer customer;
+	private final User user;
 
-	public CustomerUserDetails(Customer customer) {
-		this.customer = customer;
+	public CustomUserDetails(User user) {
+		this.user = user;
 	}
 
 	@Override
@@ -21,12 +21,12 @@ public class CustomerUserDetails implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return customer.getPassword();
+		return user.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		return customer.getUsername();
+		return user.getUsername();
 	}
 
 	@Override

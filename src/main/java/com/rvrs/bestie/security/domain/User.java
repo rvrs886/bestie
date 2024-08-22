@@ -1,20 +1,33 @@
 package com.rvrs.bestie.security.domain;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.*;
 
 import java.util.Objects;
+import java.util.UUID;
 
-public class UserData {
+@Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+public abstract class User {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.UUID)
+	private UUID id;
 
 	@Column(nullable = false, unique = true)
-	protected final String username;
+	private String username;
 
 	@Column(nullable = false)
-	protected final String password;
+	private String password;
 
-	public UserData(String username, String password) {
+	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
+	}
+
+	public User() {}
+
+	public UUID getId() {
+		return id;
 	}
 
 	public String getUsername() {
@@ -29,20 +42,12 @@ public class UserData {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		UserData userData = (UserData) o;
-		return Objects.equals(username, userData.username) && Objects.equals(password, userData.password);
+		User user = (User) o;
+		return Objects.equals(username, user.username) && Objects.equals(password, user.password);
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(username, password);
-	}
-
-	@Override
-	public String toString() {
-		return "UserData{" +
-				"username='" + username + '\'' +
-				", password='" + password + '\'' +
-				'}';
 	}
 }

@@ -7,14 +7,10 @@ import java.util.*;
 
 @Entity
 @Table(name = "customers")
-public class Customer extends UserData {
+public class Customer extends User {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
-
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
 	private PersonalInfo personalInfo;
 
 	@Lob
@@ -32,10 +28,6 @@ public class Customer extends UserData {
 		super(username, password);
 		this.personalInfo = personalInfo;
 		this.image = image;
-	}
-
-	public UUID getId() {
-		return id;
 	}
 
 	public PersonalInfo getPersonalInfo() {
@@ -57,8 +49,8 @@ public class Customer extends UserData {
 	@Override
 	public String toString() {
 		return "Customer{" +
-				"id=" + id +
-				", username='" + username + '\'' +
+				"id=" + getId() +
+				", username='" + getUsername() + '\'' +
 				'}';
 	}
 }

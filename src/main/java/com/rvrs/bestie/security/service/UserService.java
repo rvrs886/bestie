@@ -1,28 +1,27 @@
 package com.rvrs.bestie.security.service;
 
-import com.rvrs.bestie.security.domain.Customer;
-import com.rvrs.bestie.security.domain.CustomerUserDetails;
+import com.rvrs.bestie.security.domain.CustomUserDetails;
+import com.rvrs.bestie.security.domain.User;
 import com.rvrs.bestie.security.exception.UserNotFoundException;
-import com.rvrs.bestie.security.repo.CustomerRepository;
+import com.rvrs.bestie.security.repo.UserRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomerService implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
-	private final CustomerRepository customerRepository;
+	private final UserRepository userRepository;
 
-	public CustomerService(CustomerRepository customerRepository) {
-		this.customerRepository = customerRepository;
+	public UserService(UserRepository userRepository) {
+		this.userRepository = userRepository;
 	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Customer customer = customerRepository.findByUsername(username)
+		User user = userRepository.findByUsername(username)
 				.orElseThrow(() -> new UserNotFoundException("Could not find customer for given data"));
-
-		return new CustomerUserDetails(customer);
+		return new CustomUserDetails(user);
 	}
 }

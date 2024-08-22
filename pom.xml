@@ -11,8 +11,8 @@
     <groupId>com.rvrs</groupId>
     <artifactId>bestie</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>bestie-manager</name>
-    <description>bestie-manager</description>
+    <name>bestie</name>
+    <description>bestie</description>
     <url/>
     <licenses>
         <license/>
