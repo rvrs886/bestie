@@ -1,10 +1,12 @@
 package com.rvrs.bestie.core.scheduledevents.api;
 
+import com.rvrs.bestie.core.participate.dto.ParticipateRequestDto;
 import com.rvrs.bestie.core.scheduledevents.api.dto.ScheduledEventDto;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventTask;
 import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventTaskRepository;
 import com.rvrs.bestie.core.scheduledevents.service.ScheduledEventService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +39,11 @@ public class ScheduledEventController {
 	@PostMapping
 	public void generateScheduledEvent(@RequestBody ScheduledEventDto scheduledEventDto) {
 		scheduledEventService.createScheduledEvent(scheduledEventDto);
+	}
+
+	@PostMapping("/{id}/request")
+	public void addParticipateRequest(@PathVariable UUID id, @Valid @RequestBody ParticipateRequestDto participateRequestDto) {
+		scheduledEventService.addParticipateRequestForScheduledEvent(id, participateRequestDto);
 	}
 
 }

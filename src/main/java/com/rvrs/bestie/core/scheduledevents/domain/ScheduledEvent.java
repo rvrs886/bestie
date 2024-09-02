@@ -5,9 +5,7 @@ import com.rvrs.bestie.core.scheduledevents.api.dto.ScheduledEventDto;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "scheduled_events")
@@ -33,8 +31,8 @@ public class ScheduledEvent {
 	@Column(nullable = false)
 	private ScheduledEventType type;
 
-	@OneToMany(fetch = FetchType.LAZY)
-	private Set<ParticipateRequest> participateRequests;
+	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	private Set<ParticipateRequest> participateRequests = new HashSet<>();
 
 	public ScheduledEvent() {
 	}
@@ -87,6 +85,10 @@ public class ScheduledEvent {
 
 	public Set<ParticipateRequest> getParticipateRequests() {
 		return participateRequests;
+	}
+
+	public void addParticipateRequest(ParticipateRequest participateRequest) {
+		this.participateRequests.add(participateRequest);
 	}
 
 	@Override

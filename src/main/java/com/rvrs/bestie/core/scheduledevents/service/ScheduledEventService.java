@@ -1,10 +1,14 @@
 package com.rvrs.bestie.core.scheduledevents.service;
 
+import com.rvrs.bestie.core.participate.domain.ParticipateRequest;
+import com.rvrs.bestie.core.participate.dto.ParticipateRequestDto;
 import com.rvrs.bestie.core.scheduledevents.api.dto.ScheduledEventDto;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventTask;
 import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventRepository;
 import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventTaskRepository;
+import com.rvrs.bestie.security.domain.Customer;
+import com.rvrs.bestie.security.util.SecurityUtils;
 import com.rvrs.bestie.util.Clock;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -58,5 +62,19 @@ public class ScheduledEventService {
 			}
 			scheduledEventTaskRepository.save(eventTask);
 		});
+	}
+
+	public void addParticipateRequestForScheduledEvent(UUID scheduledEventId, ParticipateRequestDto participateRequestDto) {
+		ScheduledEvent scheduledEvent =  getScheduledEventById(scheduledEventId);
+
+		ParticipateRequest participateRequest = new ParticipateRequest(
+				participateRequestDto.message(),
+				(Customer) SecurityUtils.getCurrentUser(),
+				scheduledEvent
+		);
+
+		scheduledEvent.addParticipateRequest(participateRequest);
+
+		scheduledEventRepository.save(scheduledEvent);
 	}
 }

@@ -17,7 +17,7 @@ public class Customer extends User {
 	@Column(columnDefinition = "LONGBLOB")
 	private byte[] image;
 
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private Set<ParticipateRequest> participateRequests = new HashSet<>();
 
 	public Customer() {
