@@ -24,8 +24,10 @@ public class ScheduledEventTestBase extends IntegrationTestBase {
 	protected Location testLocation() {
 		return new Location(
 				"54-234",
+				"Wroclaw",
 				"Poland",
-				"xxx"
+				"xxx",
+				"gym"
 		);
 	}
 
