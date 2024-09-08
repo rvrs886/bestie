@@ -1,10 +1,9 @@
 package com.rvrs.bestie.core.scheduledevents.api;
 
 import com.rvrs.bestie.core.participate.dto.ParticipateRequestDto;
-import com.rvrs.bestie.core.scheduledevents.api.dto.ScheduledEventDto;
+import com.rvrs.bestie.core.scheduledevents.api.dto.ScheduledEventData;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
-import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventTask;
-import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventTaskRepository;
+import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventRepository;
 import com.rvrs.bestie.core.scheduledevents.service.ScheduledEventService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
@@ -17,18 +16,18 @@ import java.util.UUID;
 @RequestMapping("/scheduled-events")
 public class ScheduledEventController {
 
-	protected final ScheduledEventTaskRepository scheduledEventTaskRepository;
+	protected final ScheduledEventRepository scheduledEventRepository;
 	protected final ScheduledEventService scheduledEventService;
 
-	public ScheduledEventController(ScheduledEventTaskRepository scheduledEventTaskRepository,
+	public ScheduledEventController(ScheduledEventRepository scheduledEventRepository,
 	                                ScheduledEventService scheduledEventService) {
-		this.scheduledEventTaskRepository = scheduledEventTaskRepository;
+		this.scheduledEventRepository = scheduledEventRepository;
 		this.scheduledEventService = scheduledEventService;
 	}
 
 	@GetMapping
-	public Page<ScheduledEventTask> getScheduledEvents(Pageable pageable) {
-		return scheduledEventTaskRepository.findAll(pageable);
+	public Page<ScheduledEvent> getScheduledEvents(Pageable pageable) {
+		return scheduledEventRepository.findAll(pageable);
 	}
 
 	@GetMapping("/{scheduledEventId}")
@@ -37,8 +36,8 @@ public class ScheduledEventController {
 	}
 
 	@PostMapping
-	public void generateScheduledEvent(@RequestBody ScheduledEventDto scheduledEventDto) {
-		scheduledEventService.createScheduledEvent(scheduledEventDto);
+	public void generateScheduledEvent(@RequestBody ScheduledEventData scheduledEventData) {
+		scheduledEventService.createScheduledEvent(scheduledEventData);
 	}
 
 	@PostMapping("/{id}/request")

@@ -2,11 +2,10 @@ package com.rvrs.bestie.core.scheduledevents.service;
 
 import com.rvrs.bestie.core.participate.domain.ParticipateRequest;
 import com.rvrs.bestie.core.participate.dto.ParticipateRequestDto;
-import com.rvrs.bestie.core.scheduledevents.api.dto.ScheduledEventDto;
+import com.rvrs.bestie.core.participate.repo.ParticipateRequestsRepository;
+import com.rvrs.bestie.core.scheduledevents.api.dto.ScheduledEventData;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
-import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventTask;
 import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventRepository;
-import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventTaskRepository;
 import com.rvrs.bestie.security.domain.Customer;
 import com.rvrs.bestie.security.util.SecurityUtils;
 import com.rvrs.bestie.util.Clock;
@@ -24,17 +23,14 @@ public class ScheduledEventService {
 
 	private static final Logger log = LoggerFactory.getLogger(ScheduledEventService.class);
 	private final ScheduledEventRepository scheduledEventRepository;
-	private final ScheduledEventTaskRepository scheduledEventTaskRepository;
-	private final ExecutorService executorService;
+	private final ParticipateRequestsRepository participateRequestsRepository;
 	private final Clock clock;
 
 	public ScheduledEventService(ScheduledEventRepository scheduledEventRepository,
-	                             ScheduledEventTaskRepository scheduledEventTaskRepository,
-	                             ExecutorService scheduledEventsExecutorService,
+	                             ParticipateRequestsRepository participateRequestsRepository,
 	                             Clock clock) {
 		this.scheduledEventRepository = scheduledEventRepository;
-		this.scheduledEventTaskRepository = scheduledEventTaskRepository;
-		this.executorService = scheduledEventsExecutorService;
+		this.participateRequestsRepository = participateRequestsRepository;
 		this.clock = clock;
 	}
 
@@ -46,26 +42,14 @@ public class ScheduledEventService {
 				});
 	}
 
-	@Transactional
-	public void createScheduledEvent(ScheduledEventDto scheduledEventDto) {
-		ScheduledEventTask eventTask = new ScheduledEventTask(scheduledEventDto, clock);
-		scheduledEventTaskRepository.save(eventTask);
-
-		executorService.submit(() -> {
-			try {
-				ScheduledEvent scheduledEvent = new ScheduledEvent(scheduledEventDto);
-				scheduledEventRepository.save(scheduledEvent);
-				eventTask.finish(scheduledEvent, null, clock);
-			} catch (Exception ex) {
-				log.error("An exception occurred during scheduled event generation", ex);
-				eventTask.finish(null, ex.getMessage(), clock);
-			}
-			scheduledEventTaskRepository.save(eventTask);
-		});
+	public void createScheduledEvent(ScheduledEventData scheduledEventData) {
+		ScheduledEvent scheduledEvent = new ScheduledEvent(scheduledEventData, clock);
+		scheduledEventRepository.save(scheduledEvent);
 	}
 
+	@Transactional
 	public void addParticipateRequestForScheduledEvent(UUID scheduledEventId, ParticipateRequestDto participateRequestDto) {
-		ScheduledEvent scheduledEvent =  getScheduledEventById(scheduledEventId);
+		ScheduledEvent scheduledEvent = getScheduledEventById(scheduledEventId);
 
 		ParticipateRequest participateRequest = new ParticipateRequest(
 				participateRequestDto.message(),
@@ -73,8 +57,6 @@ public class ScheduledEventService {
 				scheduledEvent
 		);
 
-		scheduledEvent.addParticipateRequest(participateRequest);
-
-		scheduledEventRepository.save(scheduledEvent);
+		participateRequestsRepository.save(participateRequest);
 	}
 }

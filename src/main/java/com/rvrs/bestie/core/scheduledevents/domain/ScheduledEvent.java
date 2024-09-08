@@ -1,94 +1,56 @@
 package com.rvrs.bestie.core.scheduledevents.domain;
 
 import com.rvrs.bestie.core.participate.domain.ParticipateRequest;
-import com.rvrs.bestie.core.scheduledevents.api.dto.ScheduledEventDto;
+import com.rvrs.bestie.core.scheduledevents.api.dto.ScheduledEventData;
+import com.rvrs.bestie.util.Clock;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
-@Entity
 @Table(name = "scheduled_events")
+@Entity
 public class ScheduledEvent {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
-	@Column(nullable = false)
-	private String title;
-
-	@Column(nullable = false)
-	private String description;
-
 	@Embedded
-	private Location location;
+	private ScheduledEventData scheduledEventData;
 
-	@Column(nullable = false)
-	private LocalDateTime scheduledDateTime;
-
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private ScheduledEventType type;
+	private LocalDateTime creationDateTime;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-	private Set<ParticipateRequest> participateRequests = new HashSet<>();
+	private List<ParticipateRequest> participateRequests = new ArrayList<>();
 
-	public ScheduledEvent() {
+	private ScheduledEvent() {
 	}
 
-	public ScheduledEvent(ScheduledEventDto scheduledEventDto) {
-		this(
-				scheduledEventDto.scheduledEventType(),
-				scheduledEventDto.scheduledDateTime(),
-				scheduledEventDto.location(),
-				scheduledEventDto.description(),
-				scheduledEventDto.title()
-		);
+	public ScheduledEvent(ScheduledEventData scheduledEventData, Clock clock) {
+		this.scheduledEventData = scheduledEventData;
+		this.creationDateTime = clock.now();
 	}
 
-	public ScheduledEvent(ScheduledEventType type,
-	                      LocalDateTime scheduledDateTime,
-	                      Location location,
-	                      String description,
-	                      String title) {
-		this.type = type;
-		this.scheduledDateTime = scheduledDateTime;
-		this.location = location;
-		this.description = description;
-		this.title = title;
+	public ScheduledEvent(ScheduledEventData scheduledEventData, LocalDateTime creationDateTime) {
+		this.scheduledEventData = scheduledEventData;
+		this.creationDateTime = creationDateTime;
 	}
 
 	public UUID getId() {
 		return id;
 	}
 
-	public String getTitle() {
-		return title;
+	public ScheduledEventData getScheduledEventData() {
+		return scheduledEventData;
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public Location getLocation() {
-		return location;
-	}
-
-	public LocalDateTime getScheduledDateTime() {
-		return scheduledDateTime;
-	}
-
-	public ScheduledEventType getType() {
-		return type;
-	}
-
-	public Set<ParticipateRequest> getParticipateRequests() {
+	public List<ParticipateRequest> getParticipateRequests() {
 		return participateRequests;
 	}
 
-	public void addParticipateRequest(ParticipateRequest participateRequest) {
-		this.participateRequests.add(participateRequest);
+	public LocalDateTime getCreationDateTime() {
+		return creationDateTime;
 	}
 
 	@Override
@@ -97,28 +59,13 @@ public class ScheduledEvent {
 		if (o == null || getClass() != o.getClass()) return false;
 		ScheduledEvent that = (ScheduledEvent) o;
 		return Objects.equals(id, that.id) &&
-				Objects.equals(title, that.title) &&
-				Objects.equals(description, that.description) &&
-				Objects.equals(location, that.location) &&
-				Objects.equals(scheduledDateTime, that.scheduledDateTime) &&
-				type == that.type &&
+				Objects.equals(scheduledEventData, that.scheduledEventData) &&
+				Objects.equals(creationDateTime, that.creationDateTime) &&
 				Objects.equals(participateRequests, that.participateRequests);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, title, description, location, scheduledDateTime, type, participateRequests);
-	}
-
-	@Override
-	public String toString() {
-		return "ScheduledEvent{" +
-				"id=" + id +
-				", title='" + title + '\'' +
-				", description='" + description + '\'' +
-				", location=" + location +
-				", scheduledDateTime=" + scheduledDateTime +
-				", type=" + type +
-				'}';
+		return Objects.hash(id, scheduledEventData, creationDateTime, participateRequests);
 	}
 }

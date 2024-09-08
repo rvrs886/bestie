@@ -25,7 +25,7 @@ public class ParticipateRequest {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Customer customer;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	private ScheduledEvent scheduledEvent;
 
 	public ParticipateRequest() {}

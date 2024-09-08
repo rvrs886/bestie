@@ -2,13 +2,28 @@ package com.rvrs.bestie;
 
 import com.rvrs.bestie.core.participate.repo.ParticipateRequestsRepository;
 import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventRepository;
-import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventTaskRepository;
 import com.rvrs.bestie.core.scheduledevents.service.ScheduledEventService;
+import com.rvrs.bestie.security.domain.Customer;
+import com.rvrs.bestie.security.domain.User;
 import com.rvrs.bestie.security.repo.UserRepository;
 import com.rvrs.bestie.security.service.UserService;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.core.AutoConfigureCache;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.support.TransactionTemplate;
+import org.springframework.web.context.WebApplicationContext;
+
+import java.util.List;
+
+import static org.springframework.transaction.TransactionDefinition.PROPAGATION_REQUIRES_NEW;
 
 @SpringBootTest
 public abstract class IntegrationTestBase {
@@ -23,12 +38,51 @@ public abstract class IntegrationTestBase {
 	protected ScheduledEventRepository scheduledEventRepository;
 
 	@Autowired
-	protected ScheduledEventTaskRepository scheduledEventTaskRepository;
-
-	@Autowired
 	protected ScheduledEventService scheduledEventService;
 
 	@Autowired
 	protected ParticipateRequestsRepository participateRequestsRepository;
+
+	protected MockMvc mockMvc;
+
+	@Autowired
+	private WebApplicationContext webApplicationContext;
+
+	@Autowired
+	private PlatformTransactionManager transactionManager;
+
+	@BeforeEach
+	public void setup() {
+		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
+		setupSecurityContext();
+	}
+
+	@AfterEach
+	public void cleanup() {
+		this.scheduledEventRepository.deleteAll();
+		this.participateRequestsRepository.deleteAll();
+		this.userRepository.deleteAll();
+	}
+
+	protected void doInNewTransaction(Runnable runnable) {
+		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
+		transactionTemplate.setPropagationBehavior(PROPAGATION_REQUIRES_NEW);
+		transactionTemplate.execute(txn -> {
+			runnable.run();
+			return null;
+		});
+	}
+
+	private void setupSecurityContext() {
+		User user = new Customer("testuser", "testuser", null, null);
+
+		userRepository.save(user);
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(user, List.of());
+
+		SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+		securityContext.setAuthentication(authentication);
+		SecurityContextHolder.setContext(securityContext);
+	}
 
 }
