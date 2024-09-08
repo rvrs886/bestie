@@ -22,7 +22,6 @@ class ScheduledEventServiceTest extends ScheduledEventTestBase {
 		ScheduledEvent returnedEvent = scheduledEventService.getScheduledEventById(event.getId());
 
 		//then
-
 		assertThat(returnedEvent).isEqualTo(event);
 	}
 

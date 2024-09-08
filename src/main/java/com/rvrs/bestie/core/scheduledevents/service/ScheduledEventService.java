@@ -3,7 +3,7 @@ package com.rvrs.bestie.core.scheduledevents.service;
 import com.rvrs.bestie.core.participate.domain.ParticipateRequest;
 import com.rvrs.bestie.core.participate.dto.ParticipateRequestDto;
 import com.rvrs.bestie.core.participate.repo.ParticipateRequestsRepository;
-import com.rvrs.bestie.core.scheduledevents.api.dto.ScheduledEventData;
+import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventData;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
 import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventRepository;
 import com.rvrs.bestie.security.domain.Customer;
@@ -16,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
 
 @Service
 public class ScheduledEventService {
@@ -47,7 +46,6 @@ public class ScheduledEventService {
 		scheduledEventRepository.save(scheduledEvent);
 	}
 
-	@Transactional
 	public void addParticipateRequestForScheduledEvent(UUID scheduledEventId, ParticipateRequestDto participateRequestDto) {
 		ScheduledEvent scheduledEvent = getScheduledEventById(scheduledEventId);
 

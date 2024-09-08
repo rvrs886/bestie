@@ -69,7 +69,10 @@ public class ParticipateRequest {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		ParticipateRequest that = (ParticipateRequest) o;
-		return Objects.equals(id, that.id) && Objects.equals(message, that.message) && requestStatus == that.requestStatus && Objects.equals(customer, that.customer) && Objects.equals(scheduledEvent, that.scheduledEvent);
+		return Objects.equals(id, that.id) && Objects.equals(message, that.message) &&
+				requestStatus == that.requestStatus &&
+				Objects.equals(customer, that.customer) &&
+				Objects.equals(scheduledEvent, that.scheduledEvent);
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package com.rvrs.bestie.core.scheduledevents.domain;
 
 import com.rvrs.bestie.core.participate.domain.ParticipateRequest;
-import com.rvrs.bestie.core.scheduledevents.api.dto.ScheduledEventData;
 import com.rvrs.bestie.util.Clock;
 import jakarta.persistence.*;
 
@@ -21,10 +20,10 @@ public class ScheduledEvent {
 
 	private LocalDateTime creationDateTime;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "scheduledEvent", cascade = CascadeType.REMOVE)
 	private List<ParticipateRequest> participateRequests = new ArrayList<>();
 
-	private ScheduledEvent() {
+	public ScheduledEvent() {
 	}
 
 	public ScheduledEvent(ScheduledEventData scheduledEventData, Clock clock) {
@@ -60,12 +59,11 @@ public class ScheduledEvent {
 		ScheduledEvent that = (ScheduledEvent) o;
 		return Objects.equals(id, that.id) &&
 				Objects.equals(scheduledEventData, that.scheduledEventData) &&
-				Objects.equals(creationDateTime, that.creationDateTime) &&
-				Objects.equals(participateRequests, that.participateRequests);
+				Objects.equals(creationDateTime, that.creationDateTime);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, scheduledEventData, creationDateTime, participateRequests);
+		return Objects.hash(id, scheduledEventData, creationDateTime);
 	}
 }

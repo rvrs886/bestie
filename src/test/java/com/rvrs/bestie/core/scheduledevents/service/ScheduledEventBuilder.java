@@ -1,12 +1,11 @@
 package com.rvrs.bestie.core.scheduledevents.service;
 
-import com.rvrs.bestie.core.scheduledevents.api.dto.ScheduledEventData;
+import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventData;
 import com.rvrs.bestie.core.scheduledevents.domain.Location;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventMetadata;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventType;
 import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventRepository;
-import com.rvrs.bestie.util.Clock;
 
 import java.time.LocalDateTime;
 

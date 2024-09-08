@@ -39,7 +39,9 @@ public class ScheduledEventMetadata {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		ScheduledEventMetadata that = (ScheduledEventMetadata) o;
-		return Objects.equals(participantsCount, that.participantsCount) && Objects.equals(minimumAge, that.minimumAge) && Objects.equals(maximumAge, that.maximumAge);
+		return Objects.equals(participantsCount, that.participantsCount) &&
+				Objects.equals(minimumAge, that.minimumAge) &&
+				Objects.equals(maximumAge, that.maximumAge);
 	}
 
 	@Override

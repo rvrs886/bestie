@@ -59,10 +59,9 @@ public abstract class IntegrationTestBase {
 
 	@AfterEach
 	public void cleanup() {
-		this.scheduledEventRepository.deleteAll();
-		this.participateRequestsRepository.deleteAll();
 		this.userRepository.deleteAll();
-	}
+		this.scheduledEventRepository.deleteAll();
+		this.participateRequestsRepository.deleteAll();}
 
 	protected void doInNewTransaction(Runnable runnable) {
 		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);

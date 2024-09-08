@@ -1,7 +1,7 @@
 package com.rvrs.bestie.core.scheduledevents.api;
 
 import com.rvrs.bestie.core.participate.dto.ParticipateRequestDto;
-import com.rvrs.bestie.core.scheduledevents.api.dto.ScheduledEventData;
+import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventData;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
 import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventRepository;
 import com.rvrs.bestie.core.scheduledevents.service.ScheduledEventService;
