@@ -1,5 +1,6 @@
 package com.rvrs.bestie.core.scheduledevents.service;
 
+import com.rvrs.bestie.core.CoreFunctionalityTestBase;
 import com.rvrs.bestie.core.participate.dto.ParticipateRequestDto;
 import com.rvrs.bestie.core.scheduledevents.domain.Location;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
@@ -11,7 +12,7 @@ import static com.rvrs.bestie.core.scheduledevents.service.ScheduledEventBuilder
 import static java.time.LocalDateTime.of;
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ScheduledEventServiceTest extends ScheduledEventTestBase {
+class ScheduledEventServiceTest extends CoreFunctionalityTestBase {
 
 	@Test
 	public void shouldReturnScheduledEvent() {

@@ -5,48 +5,7 @@ import jakarta.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
-public class Location {
-
-	private String postCode;
-
-	private String city;
-
-	private String country;
-
-	private String address;
-
-	private String name;
-
-	public Location() {
-	}
-
-	public Location(String postCode, String city, String country, String address, String name) {
-		this.postCode = postCode;
-		this.city = city;
-		this.country = country;
-		this.address = address;
-		this.name = name;
-	}
-
-	public String getPostCode() {
-		return postCode;
-	}
-
-	public String getCountry() {
-		return country;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public String getName() {
-		return name;
-	}
+public record Location(String postCode, String city, String country, String address, String name) {
 
 	@Override
 	public boolean equals(Object o) {

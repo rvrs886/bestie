@@ -18,6 +18,7 @@ public class ScheduledEvent {
 	@Embedded
 	private ScheduledEventData scheduledEventData;
 
+	@Column(nullable = false)
 	private LocalDateTime creationDateTime;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "scheduledEvent", cascade = CascadeType.REMOVE)

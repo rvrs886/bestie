@@ -1,5 +1,6 @@
 package com.rvrs.bestie;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rvrs.bestie.core.participate.repo.ParticipateRequestsRepository;
 import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventRepository;
 import com.rvrs.bestie.core.scheduledevents.service.ScheduledEventService;
@@ -43,6 +44,9 @@ public abstract class IntegrationTestBase {
 	@Autowired
 	protected ParticipateRequestsRepository participateRequestsRepository;
 
+	@Autowired
+	protected ObjectMapper objectMapper;
+
 	protected MockMvc mockMvc;
 
 	@Autowired
@@ -59,9 +63,10 @@ public abstract class IntegrationTestBase {
 
 	@AfterEach
 	public void cleanup() {
+		this.participateRequestsRepository.deleteAll();
 		this.userRepository.deleteAll();
 		this.scheduledEventRepository.deleteAll();
-		this.participateRequestsRepository.deleteAll();}
+	}
 
 	protected void doInNewTransaction(Runnable runnable) {
 		TransactionTemplate transactionTemplate = new TransactionTemplate(transactionManager);
