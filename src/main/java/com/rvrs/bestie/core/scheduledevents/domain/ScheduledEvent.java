@@ -1,5 +1,6 @@
 package com.rvrs.bestie.core.scheduledevents.domain;
 
+import com.rvrs.bestie.core.audit.domain.AuditEntry;
 import com.rvrs.bestie.core.participate.domain.ParticipateRequest;
 import com.rvrs.bestie.util.Clock;
 import jakarta.persistence.*;
@@ -23,6 +24,10 @@ public class ScheduledEvent {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "scheduledEvent", cascade = CascadeType.REMOVE)
 	private List<ParticipateRequest> participateRequests = new ArrayList<>();
+
+	@OneToMany
+	@JoinColumn(name = "audit_entry_id", referencedColumnName = "entity_id")
+	private List<AuditEntry> auditEntries = new ArrayList<>();
 
 	public ScheduledEvent() {
 	}
@@ -51,6 +56,10 @@ public class ScheduledEvent {
 
 	public LocalDateTime getCreationDateTime() {
 		return creationDateTime;
+	}
+
+	public void addAuditEntry(AuditEntry auditEntry) {
+		this.auditEntries.add(auditEntry);
 	}
 
 	@Override
