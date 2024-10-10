@@ -1,15 +1,15 @@
 package com.rvrs.bestie.core.scheduledevents.domain;
 
-import com.rvrs.bestie.core.audit.domain.AuditEntry;
 import com.rvrs.bestie.core.participate.domain.ParticipateRequest;
-import com.rvrs.bestie.util.Clock;
 import jakarta.persistence.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
-@Table(name = "scheduled_events")
 @Entity
+@Table(name = "scheduled_events")
+@Audited
 public class ScheduledEvent {
 
 	@Id
@@ -19,27 +19,15 @@ public class ScheduledEvent {
 	@Embedded
 	private ScheduledEventData scheduledEventData;
 
-	@Column(nullable = false)
-	private LocalDateTime creationDateTime;
-
+	@NotAudited
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "scheduledEvent", cascade = CascadeType.REMOVE)
 	private List<ParticipateRequest> participateRequests = new ArrayList<>();
-
-	@OneToMany
-	@JoinColumn(name = "audit_entry_id", referencedColumnName = "entity_id")
-	private List<AuditEntry> auditEntries = new ArrayList<>();
 
 	public ScheduledEvent() {
 	}
 
-	public ScheduledEvent(ScheduledEventData scheduledEventData, Clock clock) {
+	public ScheduledEvent(ScheduledEventData scheduledEventData) {
 		this.scheduledEventData = scheduledEventData;
-		this.creationDateTime = clock.now();
-	}
-
-	public ScheduledEvent(ScheduledEventData scheduledEventData, LocalDateTime creationDateTime) {
-		this.scheduledEventData = scheduledEventData;
-		this.creationDateTime = creationDateTime;
 	}
 
 	public UUID getId() {
@@ -54,12 +42,8 @@ public class ScheduledEvent {
 		return participateRequests;
 	}
 
-	public LocalDateTime getCreationDateTime() {
-		return creationDateTime;
-	}
-
-	public void addAuditEntry(AuditEntry auditEntry) {
-		this.auditEntries.add(auditEntry);
+	public void updateScheduledData(ScheduledEventData scheduledEventData) {
+		this.scheduledEventData = scheduledEventData;
 	}
 
 	@Override
@@ -69,11 +53,11 @@ public class ScheduledEvent {
 		ScheduledEvent that = (ScheduledEvent) o;
 		return Objects.equals(id, that.id) &&
 				Objects.equals(scheduledEventData, that.scheduledEventData) &&
-				Objects.equals(creationDateTime, that.creationDateTime);
+				Objects.equals(participateRequests, that.participateRequests);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, scheduledEventData, creationDateTime);
+		return Objects.hash(id, scheduledEventData, participateRequests);
 	}
 }

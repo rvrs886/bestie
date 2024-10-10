@@ -1,6 +1,15 @@
 package com.rvrs.bestie.core.audit.domain;
 
-public enum OperationType {
+import org.hibernate.envers.RevisionType;
 
-	CREATE, UPDATE, DELETE
+public enum OperationType {
+	CREATE, UPDATE, DELETE;
+
+	public static OperationType getOperationTypeFor(RevisionType revisionType) {
+		return switch (revisionType) {
+			case ADD -> CREATE;
+			case MOD -> UPDATE;
+			case DEL -> DELETE;
+		};
+	}
 }

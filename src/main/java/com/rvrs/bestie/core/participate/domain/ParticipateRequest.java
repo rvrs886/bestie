@@ -3,6 +3,8 @@ package com.rvrs.bestie.core.participate.domain;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
 import com.rvrs.bestie.security.domain.Customer;
 import jakarta.persistence.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import java.util.Objects;
 
@@ -10,6 +12,7 @@ import static com.rvrs.bestie.core.participate.domain.RequestStatus.*;
 
 @Entity
 @Table(name = "participate_requests")
+@Audited
 public class ParticipateRequest {
 
 	@Id
@@ -22,9 +25,11 @@ public class ParticipateRequest {
 	@Column(nullable = false)
 	private RequestStatus requestStatus = PENDING;
 
+	@NotAudited
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Customer customer;
 
+	@NotAudited
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	private ScheduledEvent scheduledEvent;
 

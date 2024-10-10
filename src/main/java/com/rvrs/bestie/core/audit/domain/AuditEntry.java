@@ -1,59 +1,50 @@
 package com.rvrs.bestie.core.audit.domain;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rvrs.bestie.security.domain.User;
+import com.rvrs.bestie.core.audit.listener.AuditListener;
 import jakarta.persistence.*;
+import org.hibernate.envers.RevisionEntity;
+import org.hibernate.envers.RevisionNumber;
+import org.hibernate.envers.RevisionTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
-import java.util.UUID;
 
-@Table(name = "audit_entries")
 @Entity
+@RevisionEntity(AuditListener.class)
+@Table(name = "audit_log")
 public class AuditEntry {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.UUID)
-	private UUID id;
+	@GeneratedValue
+	@RevisionNumber
+	private Long revisionNumber;
 
-	@ManyToOne
-	private User user;
+	@RevisionTimestamp
+	private LocalDateTime revisionTimestamp;
 
-	@Enumerated(EnumType.STRING)
-	private OperationType operationType;
+	private String author;
 
-	private String entityType;
-
-	private String entityId;
-
-	private String serializedObject;
-
-	public AuditEntry(User user,
-	                  OperationType operationType,
-	                  String entityType,
-	                  String entityId,
-	                  Object objectBeforeUpdate,
-	                  ObjectMapper objectMapper) throws JsonProcessingException {
-		this.user = user;
-		this.operationType = operationType;
-		this.serializedObject = objectMapper.writeValueAsString(objectBeforeUpdate);
-		this.entityType = objectBeforeUpdate.getClass().getName();
+	public AuditEntry() {
 	}
 
-	public UUID getId() {
-		return id;
+	public AuditEntry(String author) {
+		this.author = author;
 	}
 
-	public User getUser() {
-		return user;
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
-	public OperationType getOperationType() {
-		return operationType;
+	public LocalDateTime getRevisionTimestamp() {
+		return revisionTimestamp;
 	}
 
-	public String getSerializedObject() {
-		return serializedObject;
+	public String getAuthor() {
+		return author;
+	}
+
+	public Long getRevisionNumber() {
+		return revisionNumber;
 	}
 
 	@Override
@@ -61,11 +52,13 @@ public class AuditEntry {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		AuditEntry that = (AuditEntry) o;
-		return Objects.equals(id, that.id) && Objects.equals(user, that.user) && operationType == that.operationType && Objects.equals(serializedObject, that.serializedObject);
+		return Objects.equals(revisionNumber, that.revisionNumber) &&
+				Objects.equals(revisionTimestamp, that.revisionTimestamp) &&
+				Objects.equals(author, that.author);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, user, operationType, serializedObject);
+		return Objects.hash(revisionNumber, revisionTimestamp, author);
 	}
 }

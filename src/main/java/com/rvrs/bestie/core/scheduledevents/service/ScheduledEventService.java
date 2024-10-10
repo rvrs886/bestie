@@ -23,14 +23,11 @@ public class ScheduledEventService {
 	private static final Logger log = LoggerFactory.getLogger(ScheduledEventService.class);
 	private final ScheduledEventRepository scheduledEventRepository;
 	private final ParticipateRequestsRepository participateRequestsRepository;
-	private final Clock clock;
 
 	public ScheduledEventService(ScheduledEventRepository scheduledEventRepository,
-	                             ParticipateRequestsRepository participateRequestsRepository,
-	                             Clock clock) {
+	                             ParticipateRequestsRepository participateRequestsRepository) {
 		this.scheduledEventRepository = scheduledEventRepository;
 		this.participateRequestsRepository = participateRequestsRepository;
-		this.clock = clock;
 	}
 
 	public ScheduledEvent getScheduledEventById(UUID scheduledEventId) {
@@ -42,7 +39,13 @@ public class ScheduledEventService {
 	}
 
 	public void createScheduledEvent(ScheduledEventData scheduledEventData) {
-		ScheduledEvent scheduledEvent = new ScheduledEvent(scheduledEventData, clock);
+		ScheduledEvent scheduledEvent = new ScheduledEvent(scheduledEventData);
+		scheduledEventRepository.save(scheduledEvent);
+	}
+
+	public void updateScheduledEvent(UUID scheduledEventId, ScheduledEventData scheduledEventData) {
+		ScheduledEvent scheduledEvent = getScheduledEventById(scheduledEventId);
+		scheduledEvent.updateScheduledData(scheduledEventData);
 		scheduledEventRepository.save(scheduledEvent);
 	}
 

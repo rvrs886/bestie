@@ -19,7 +19,6 @@ public class ScheduledEventBuilder {
 	private Integer participantsCount;
 	private Integer maximumAge;
 	private Integer minimumAge;
-	private LocalDateTime creationDateTime;
 
 	public static ScheduledEventBuilder scheduledEventBuilder() {
 		return new ScheduledEventBuilder();
@@ -65,11 +64,6 @@ public class ScheduledEventBuilder {
 		return this;
 	}
 
-	public ScheduledEventBuilder withCreationDateTime(LocalDateTime creationDateTime) {
-		this.creationDateTime = creationDateTime;
-		return this;
-	}
-
 	public ScheduledEvent build() {
 		ScheduledEventMetadata scheduledEventMetadata = new ScheduledEventMetadata(
 				participantsCount,
@@ -85,8 +79,7 @@ public class ScheduledEventBuilder {
 				scheduledEventMetadata
 		);
 		return new ScheduledEvent(
-				scheduledEventData,
-				creationDateTime
+				scheduledEventData
 		);
 	}
 
@@ -106,8 +99,7 @@ public class ScheduledEventBuilder {
 		);
 		return scheduledEventRepository.save(
 				new ScheduledEvent(
-						scheduledEventData,
-						creationDateTime
+						scheduledEventData
 				)
 		);
 	}
