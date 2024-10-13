@@ -1,13 +1,17 @@
 package com.rvrs.bestie.security.domain;
 
+import com.rvrs.bestie.core.audit.domain.Auditable;
 import com.rvrs.bestie.core.participate.domain.ParticipateRequest;
 import jakarta.persistence.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
 
 import java.util.*;
 
 @Entity
 @Table(name = "customers")
-public class Customer extends User {
+@Audited
+public class Customer extends User implements Auditable {
 
 	@PrimaryKeyJoinColumn
 	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
@@ -17,6 +21,7 @@ public class Customer extends User {
 	@Column(columnDefinition = "LONGBLOB")
 	private byte[] image;
 
+	@NotAudited
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private Set<ParticipateRequest> participateRequests = new HashSet<>();
 

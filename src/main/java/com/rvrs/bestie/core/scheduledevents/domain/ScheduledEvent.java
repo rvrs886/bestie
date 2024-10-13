@@ -1,5 +1,6 @@
 package com.rvrs.bestie.core.scheduledevents.domain;
 
+import com.rvrs.bestie.core.audit.domain.Auditable;
 import com.rvrs.bestie.core.participate.domain.ParticipateRequest;
 import jakarta.persistence.*;
 import org.hibernate.envers.Audited;
@@ -10,7 +11,7 @@ import java.util.*;
 @Entity
 @Table(name = "scheduled_events")
 @Audited
-public class ScheduledEvent {
+public class ScheduledEvent implements Auditable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)

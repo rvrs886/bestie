@@ -1,7 +1,7 @@
 package com.rvrs.bestie.core.scheduledevents.api;
 
 import com.rvrs.bestie.core.audit.domain.AuditData;
-import com.rvrs.bestie.core.audit.service.AuditDataParser;
+import com.rvrs.bestie.core.audit.service.AuditService;
 import com.rvrs.bestie.core.participate.dto.ParticipateRequestDto;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventData;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
@@ -23,18 +23,18 @@ public class ScheduledEventController {
 
 	private final ScheduledEventRepository scheduledEventRepository;
 	private final ScheduledEventService scheduledEventService;
-	private final AuditDataParser auditDataParser;
+	private final AuditService auditService;
 
 	@PersistenceContext
 	protected final EntityManager entityManager;
 
 	public ScheduledEventController(ScheduledEventRepository scheduledEventRepository,
 	                                ScheduledEventService scheduledEventService,
-	                                AuditDataParser auditDataParser,
+	                                AuditService auditService,
 	                                EntityManager entityManager) {
 		this.scheduledEventRepository = scheduledEventRepository;
 		this.scheduledEventService = scheduledEventService;
-		this.auditDataParser = auditDataParser;
+		this.auditService = auditService;
 		this.entityManager = entityManager;
 	}
 
@@ -60,7 +60,7 @@ public class ScheduledEventController {
 
 	@GetMapping("/{id}/audit-log")
 	public List<AuditData<ScheduledEvent>> getAuditLog(@PathVariable UUID id) {
-		return auditDataParser.getAuditLogFor(ScheduledEvent.class, id);
+		return auditService.getAuditLogFor(ScheduledEvent.class, id);
 	}
 
 	@PostMapping("/{id}/request")

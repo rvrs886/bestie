@@ -1,5 +1,6 @@
 package com.rvrs.bestie.core.participate.domain;
 
+import com.rvrs.bestie.core.audit.domain.Auditable;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
 import com.rvrs.bestie.security.domain.Customer;
 import jakarta.persistence.*;
@@ -13,7 +14,7 @@ import static com.rvrs.bestie.core.participate.domain.RequestStatus.*;
 @Entity
 @Table(name = "participate_requests")
 @Audited
-public class ParticipateRequest {
+public class ParticipateRequest implements Auditable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

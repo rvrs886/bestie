@@ -35,16 +35,16 @@ public class AuditEntry {
 		this.author = author;
 	}
 
+	public Long getRevisionNumber() {
+		return revisionNumber;
+	}
+
 	public LocalDateTime getRevisionTimestamp() {
 		return revisionTimestamp;
 	}
 
 	public String getAuthor() {
 		return author;
-	}
-
-	public Long getRevisionNumber() {
-		return revisionNumber;
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class SecurityController {
 
-	@PostMapping
-	public void createCustomerAccount() {}
+	@PostMapping("/register")
+	public void registerAccount() {}
 
 }
