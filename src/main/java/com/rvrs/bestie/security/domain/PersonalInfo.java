@@ -1,6 +1,9 @@
 package com.rvrs.bestie.security.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.envers.Audited;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -8,27 +11,34 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "personal_info")
+@Audited
 public class PersonalInfo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
 
+	@NotEmpty
 	@Column(nullable = false)
 	private String firstName;
 
+	@NotEmpty
 	@Column(nullable = false)
 	private String lastName;
 
+	@NotNull
 	@Column(nullable = false)
 	private LocalDate dateOfBirth;
 
+	@NotEmpty
 	@Column(nullable = false, unique = true)
 	private String phoneNumber;
 
+	@NotEmpty
 	@Column(nullable = false, unique = true)
 	private String email;
 
+	@NotEmpty
 	@Column(nullable = false)
 	private String nationality;
 

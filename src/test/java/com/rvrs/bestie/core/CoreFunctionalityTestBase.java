@@ -8,8 +8,9 @@ import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventType;
 import com.rvrs.bestie.security.domain.Customer;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import java.time.LocalDateTime;
+
 import static com.rvrs.bestie.core.scheduledevents.service.ScheduledEventBuilder.scheduledEventBuilder;
-import static java.time.LocalDateTime.now;
 
 public class CoreFunctionalityTestBase extends IntegrationTestBase {
 
@@ -18,11 +19,10 @@ public class CoreFunctionalityTestBase extends IntegrationTestBase {
 				.withTitle("test title")
 				.withType(ScheduledEventType.ENTERTAINMENT)
 				.withDescription("description")
-				.withScheduledDateTime(now())
+				.withScheduledDateTime(LocalDateTime.of(2024, 10, 20, 12, 30, 20))
 				.withLocation(testLocation())
 				.withMaximumAge(50)
 				.withMinimumAge(18)
-				.withCreationDateTime(now())
 				.build(scheduledEventRepository);
 	}
 

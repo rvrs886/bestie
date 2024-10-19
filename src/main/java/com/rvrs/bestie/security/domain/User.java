@@ -1,12 +1,14 @@
 package com.rvrs.bestie.security.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.envers.Audited;
 
 import java.util.Objects;
 import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Audited
 public abstract class User {
 
 	@Id

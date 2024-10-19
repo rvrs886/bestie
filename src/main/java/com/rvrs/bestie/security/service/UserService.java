@@ -24,4 +24,8 @@ public class UserService implements UserDetailsService {
 				.orElseThrow(() -> new UserNotFoundException("Could not find customer for given data"));
 		return new CustomUserDetails(user);
 	}
+
+	public void registerUser(User user) {
+		userRepository.save(user);
+	}
 }

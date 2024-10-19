@@ -7,14 +7,14 @@ import com.rvrs.bestie.core.scheduledevents.service.ScheduledEventService;
 import com.rvrs.bestie.security.domain.Customer;
 import com.rvrs.bestie.security.domain.User;
 import com.rvrs.bestie.security.repo.UserRepository;
-import com.rvrs.bestie.security.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,13 +27,11 @@ import java.util.List;
 import static org.springframework.transaction.TransactionDefinition.PROPAGATION_REQUIRES_NEW;
 
 @SpringBootTest
+@EnableAutoConfiguration
 public abstract class IntegrationTestBase {
 
 	@Autowired
 	protected UserRepository userRepository;
-
-	@Autowired
-	protected UserService userService;
 
 	@Autowired
 	protected ScheduledEventRepository scheduledEventRepository;
@@ -53,7 +51,7 @@ public abstract class IntegrationTestBase {
 	private WebApplicationContext webApplicationContext;
 
 	@Autowired
-	private PlatformTransactionManager transactionManager;
+	protected PlatformTransactionManager transactionManager;
 
 	@BeforeEach
 	public void setup() {
@@ -78,15 +76,11 @@ public abstract class IntegrationTestBase {
 	}
 
 	private void setupSecurityContext() {
-		User user = new Customer("testuser", "testuser", null, null);
-
-		userRepository.save(user);
+		User user = userRepository.save(new Customer("testuser", "testuser", null, null));
 
 		Authentication authentication = new UsernamePasswordAuthenticationToken(user, List.of());
 
-		SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-		securityContext.setAuthentication(authentication);
-		SecurityContextHolder.setContext(securityContext);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}
 
 }

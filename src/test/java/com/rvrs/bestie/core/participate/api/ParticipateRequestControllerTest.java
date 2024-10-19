@@ -3,8 +3,8 @@ package com.rvrs.bestie.core.participate.api;
 import com.rvrs.bestie.core.CoreFunctionalityTestBase;
 import com.rvrs.bestie.core.participate.domain.ParticipateRequest;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
+import org.springframework.transaction.annotation.Transactional;
 
 import static com.rvrs.bestie.core.participate.domain.RequestStatus.*;
 import static org.assertj.core.api.Assertions.assertThat;

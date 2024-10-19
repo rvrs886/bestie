@@ -58,4 +58,18 @@ public class Customer extends User implements Auditable {
 				", username='" + getUsername() + '\'' +
 				'}';
 	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		if (!super.equals(o)) return false;
+		Customer customer = (Customer) o;
+		return Objects.equals(personalInfo, customer.personalInfo) && Objects.deepEquals(image, customer.image) && Objects.equals(participateRequests, customer.participateRequests);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(super.hashCode(), personalInfo, Arrays.hashCode(image), participateRequests);
+	}
 }

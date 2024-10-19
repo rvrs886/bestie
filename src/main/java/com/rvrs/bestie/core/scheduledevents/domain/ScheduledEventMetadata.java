@@ -5,7 +5,33 @@ import jakarta.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
-public record ScheduledEventMetadata(Integer participantsCount, Integer minimumAge, Integer maximumAge) {
+public class ScheduledEventMetadata {
+
+	private Integer participantsCount;
+
+	private Integer minimumAge;
+
+	private Integer maximumAge;
+
+	private ScheduledEventMetadata() {}
+
+	public ScheduledEventMetadata(Integer participantsCount, Integer minimumAge, Integer maximumAge) {
+		this.participantsCount = participantsCount;
+		this.minimumAge = minimumAge;
+		this.maximumAge = maximumAge;
+	}
+
+	public Integer getParticipantsCount() {
+		return participantsCount;
+	}
+
+	public Integer getMinimumAge() {
+		return minimumAge;
+	}
+
+	public Integer getMaximumAge() {
+		return maximumAge;
+	}
 
 	@Override
 	public boolean equals(Object o) {

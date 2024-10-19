@@ -19,11 +19,13 @@ class ScheduledEventServiceTest extends CoreFunctionalityTestBase {
 		//given
 		ScheduledEvent event = existingScheduledEvent();
 
-		//when
-		ScheduledEvent returnedEvent = scheduledEventService.getScheduledEventById(event.getId());
+		doInNewTransaction(() -> {
+			//when
+			ScheduledEvent returnedEvent = scheduledEventService.getScheduledEventById(event.getId());
 
-		//then
-		assertThat(returnedEvent).isEqualTo(event);
+			//then
+			assertThat(returnedEvent).usingRecursiveComparison().isEqualTo(event);
+		});
 	}
 
 	@Test
