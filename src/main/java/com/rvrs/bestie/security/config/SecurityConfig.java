@@ -28,7 +28,7 @@ public class SecurityConfig {
 						.deleteCookies("JSESSION")
 						.logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK)))
 				.authorizeHttpRequests(authorize -> authorize
-						.requestMatchers("/auth/login")
+						.requestMatchers("/auth/login", "/users/register/customer")
 						.permitAll()
 						.anyRequest()
 						.authenticated())

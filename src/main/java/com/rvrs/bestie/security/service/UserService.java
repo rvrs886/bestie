@@ -4,6 +4,7 @@ import com.rvrs.bestie.security.domain.CustomUserDetails;
 import com.rvrs.bestie.security.domain.User;
 import com.rvrs.bestie.security.exception.UserNotFoundException;
 import com.rvrs.bestie.security.repo.UserRepository;
+import com.rvrs.bestie.security.util.CredentialsValidator;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,7 +26,7 @@ public class UserService implements UserDetailsService {
 		return new CustomUserDetails(user);
 	}
 
-	public void registerUser(User user) {
-		userRepository.save(user);
+	public User registerUser(User user) {
+		return userRepository.save(user);
 	}
 }

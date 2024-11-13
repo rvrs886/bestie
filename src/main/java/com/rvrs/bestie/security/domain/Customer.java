@@ -13,10 +13,6 @@ import java.util.*;
 @Audited
 public class Customer extends User implements Auditable {
 
-	@PrimaryKeyJoinColumn
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
-	private PersonalInfo personalInfo;
-
 	@Lob
 	@Column(columnDefinition = "LONGBLOB")
 	private byte[] image;
@@ -26,17 +22,12 @@ public class Customer extends User implements Auditable {
 	private Set<ParticipateRequest> participateRequests = new HashSet<>();
 
 	public Customer() {
-		super(null, null);
+		super(null, null, null);
 	}
 
 	public Customer(String username, String password, PersonalInfo personalInfo, byte[] image) {
-		super(username, password);
-		this.personalInfo = personalInfo;
+		super(username, password, personalInfo);
 		this.image = image;
-	}
-
-	public PersonalInfo getPersonalInfo() {
-		return personalInfo;
 	}
 
 	public byte[] getImage() {
@@ -65,11 +56,11 @@ public class Customer extends User implements Auditable {
 		if (o == null || getClass() != o.getClass()) return false;
 		if (!super.equals(o)) return false;
 		Customer customer = (Customer) o;
-		return Objects.equals(personalInfo, customer.personalInfo) && Objects.deepEquals(image, customer.image) && Objects.equals(participateRequests, customer.participateRequests);
+		return Objects.deepEquals(image, customer.image) && Objects.equals(participateRequests, customer.participateRequests);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(super.hashCode(), personalInfo, Arrays.hashCode(image), participateRequests);
+		return Objects.hash(super.hashCode(), Arrays.hashCode(image), participateRequests);
 	}
 }

@@ -23,7 +23,6 @@ public class SecurityService {
 		this.securityContextRepository = securityContextRepository;
 	}
 
-
 	public void authenticate(LoginDto loginDto, HttpServletRequest request, HttpServletResponse response) {
 		UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken.unauthenticated(
 				loginDto.username(), loginDto.password()

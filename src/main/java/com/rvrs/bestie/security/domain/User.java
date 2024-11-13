@@ -21,9 +21,14 @@ public abstract class User {
 	@Column(nullable = false)
 	private String password;
 
-	public User(String username, String password) {
+	@PrimaryKeyJoinColumn
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+	private PersonalInfo personalInfo;
+
+	public User(String username, String password, PersonalInfo personalInfo) {
 		this.username = username;
 		this.password = password;
+		this.personalInfo = personalInfo;
 	}
 
 	public User() {}
@@ -40,16 +45,23 @@ public abstract class User {
 		return password;
 	}
 
+	public PersonalInfo getPersonalInfo() {
+		return personalInfo;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		User user = (User) o;
-		return Objects.equals(username, user.username) && Objects.equals(password, user.password);
+		return Objects.equals(id, user.id) &&
+				Objects.equals(username, user.username) &&
+				Objects.equals(password, user.password) &&
+				Objects.equals(personalInfo, user.personalInfo);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(username, password);
+		return Objects.hash(id, username, password, personalInfo);
 	}
 }
