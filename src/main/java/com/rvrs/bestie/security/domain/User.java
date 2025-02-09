@@ -1,5 +1,6 @@
 package com.rvrs.bestie.security.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.hibernate.envers.Audited;
 
@@ -18,11 +19,12 @@ public abstract class User {
 	@Column(nullable = false, unique = true)
 	private String username;
 
+	@JsonIgnore
 	@Column(nullable = false)
 	private String password;
 
 	@PrimaryKeyJoinColumn
-	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.LAZY)
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, fetch = FetchType.EAGER)
 	private PersonalInfo personalInfo;
 
 	public User(String username, String password, PersonalInfo personalInfo) {

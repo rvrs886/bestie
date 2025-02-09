@@ -28,6 +28,10 @@ public class PersonalInfo {
 
 	@NotNull
 	@Column(nullable = false)
+	private Gender gender;
+
+	@NotNull
+	@Column(nullable = false)
 	private LocalDate dateOfBirth;
 
 	@NotEmpty
@@ -45,9 +49,16 @@ public class PersonalInfo {
 	public PersonalInfo() {
 	}
 
-	public PersonalInfo(String firstName, String lastName, LocalDate dateOfBirth, String phoneNumber, String email, String nationality) {
+	public PersonalInfo(String firstName,
+	                    String lastName,
+						Gender gender,
+	                    LocalDate dateOfBirth,
+	                    String phoneNumber,
+	                    String email,
+	                    String nationality) {
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.gender = gender;
 		this.dateOfBirth = dateOfBirth;
 		this.phoneNumber = phoneNumber;
 		this.email = email;
@@ -64,6 +75,10 @@ public class PersonalInfo {
 
 	public String getLastName() {
 		return lastName;
+	}
+
+	public Gender getGender() {
+		return gender;
 	}
 
 	public LocalDate getDateOfBirth() {
@@ -84,14 +99,20 @@ public class PersonalInfo {
 
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		PersonalInfo that = (PersonalInfo) o;
-		return Objects.equals(id, that.id) && Objects.equals(firstName, that.firstName) && Objects.equals(lastName, that.lastName) && Objects.equals(dateOfBirth, that.dateOfBirth) && Objects.equals(phoneNumber, that.phoneNumber) && Objects.equals(email, that.email) && Objects.equals(nationality, that.nationality);
+		return Objects.equals(id, that.id) &&
+				Objects.equals(firstName, that.firstName) &&
+				Objects.equals(lastName, that.lastName) &&
+				gender == that.gender &&
+				Objects.equals(dateOfBirth, that.dateOfBirth) &&
+				Objects.equals(phoneNumber, that.phoneNumber) &&
+				Objects.equals(email, that.email) &&
+				Objects.equals(nationality, that.nationality);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, firstName, lastName, dateOfBirth, phoneNumber, email, nationality);
+		return Objects.hash(id, firstName, lastName, gender, dateOfBirth, phoneNumber, email, nationality);
 	}
 }

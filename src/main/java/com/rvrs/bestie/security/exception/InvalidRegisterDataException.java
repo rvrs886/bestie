@@ -1,8 +1,8 @@
 package com.rvrs.bestie.security.exception;
 
-import com.rvrs.bestie.util.RuntimeExceptionWithErrorCode;
+import com.rvrs.bestie.util.BestieException;
 
-public class InvalidRegisterDataException extends RuntimeExceptionWithErrorCode {
+public class InvalidRegisterDataException extends BestieException {
 
 	public InvalidRegisterDataException(String message) {
 		super(message);

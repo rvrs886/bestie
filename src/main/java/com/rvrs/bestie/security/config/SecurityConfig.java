@@ -1,5 +1,6 @@
 package com.rvrs.bestie.security.config;
 
+import com.rvrs.bestie.security.service.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,10 @@ public class SecurityConfig {
 				.logout(logout -> logout
 						.logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
 						.deleteCookies("JSESSION")
-						.logoutSuccessHandler((request, response, authentication) -> response.setStatus(HttpServletResponse.SC_OK)))
+						.logoutSuccessHandler((request, response, authentication) ->
+								response.setStatus(HttpServletResponse.SC_OK)
+						)
+				)
 				.authorizeHttpRequests(authorize -> authorize
 						.requestMatchers("/auth/login", "/users/register/customer")
 						.permitAll()
@@ -45,10 +49,10 @@ public class SecurityConfig {
 	}
 
 	@Bean
-	AuthenticationProvider daoAuthenticationProvider(UserDetailsService userDetailsService) {
+	AuthenticationProvider daoAuthenticationProvider(UserService userService, PasswordEncoder passwordEncoder) {
 		DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-		daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+		daoAuthenticationProvider.setUserDetailsService(userService);
+		daoAuthenticationProvider.setPasswordEncoder(passwordEncoder);
 		return daoAuthenticationProvider;
 	}
 

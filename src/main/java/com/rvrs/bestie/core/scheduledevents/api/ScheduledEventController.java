@@ -43,9 +43,9 @@ public class ScheduledEventController {
 		return scheduledEventRepository.findAll(pageable);
 	}
 
-	@GetMapping("/{scheduledEventId}")
-	public ScheduledEvent getScheduledEvent(@PathVariable UUID scheduledEventId) {
-		return scheduledEventService.getScheduledEventById(scheduledEventId);
+	@GetMapping("/{id}")
+	public ScheduledEvent getScheduledEvent(@PathVariable UUID id) {
+		return scheduledEventService.getScheduledEventById(id);
 	}
 
 	@PostMapping
