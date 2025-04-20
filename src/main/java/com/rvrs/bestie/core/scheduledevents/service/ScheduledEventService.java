@@ -54,7 +54,7 @@ public class ScheduledEventService {
 
 		ParticipateRequest participateRequest = new ParticipateRequest(
 				participateRequestDto.message(),
-				(Customer) SecurityUtils.getCurrentUser(),
+				(Customer) SecurityUtils.getCurrentUser().getUser(),
 				scheduledEvent
 		);
 

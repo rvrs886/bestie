@@ -32,7 +32,7 @@ public class SecurityController {
 
 	@GetMapping("/current-user")
 	public User getCurrentUser() {
-		User user = SecurityUtils.getCurrentUser();
+		User user = SecurityUtils.getCurrentUser().getUser();
 		return userRepository.findByUsername(user.getUsername())
 				.orElseThrow(IllegalArgumentException::new);
 	}

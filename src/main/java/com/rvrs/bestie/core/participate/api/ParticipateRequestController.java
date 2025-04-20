@@ -21,7 +21,7 @@ public class ParticipateRequestController {
 
 	@GetMapping("/self")
 	public Page<ParticipateRequest> getParticipateRequestsForCurrentUser(Pageable pageable) {
-		User user = SecurityUtils.getCurrentUser();
+		User user = SecurityUtils.getCurrentUser().getUser();
 		return participateRequestsRepository.findParticipateRequestsByCustomer_Id(user.getId(), pageable);
 	}
 

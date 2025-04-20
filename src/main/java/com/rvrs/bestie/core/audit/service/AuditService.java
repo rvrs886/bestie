@@ -14,7 +14,6 @@ import java.util.List;
 
 import static com.rvrs.bestie.core.audit.domain.OperationType.getOperationTypeFor;
 
-@Service
 public class AuditService {
 
 	private final EntityManager em;
