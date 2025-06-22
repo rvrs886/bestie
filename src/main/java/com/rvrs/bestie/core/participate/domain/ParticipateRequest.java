@@ -1,8 +1,9 @@
 package com.rvrs.bestie.core.participate.domain;
 
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import com.rvrs.bestie.core.audit.domain.Auditable;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
-import com.rvrs.bestie.security.domain.Customer;
+import com.rvrs.bestie.security.domain.User;
 import jakarta.persistence.*;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
@@ -28,26 +29,19 @@ public class ParticipateRequest implements Auditable {
 
 	@NotAudited
 	@ManyToOne(fetch = FetchType.EAGER)
-	private Customer customer;
+	private User user;
 
+	@JsonIncludeProperties("id")
 	@NotAudited
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	private ScheduledEvent scheduledEvent;
 
 	public ParticipateRequest() {}
 
-	public ParticipateRequest(String message, Customer customer, ScheduledEvent scheduledEvent) {
+	public ParticipateRequest(String message, User user, ScheduledEvent scheduledEvent) {
 		this.message = message;
-		this.customer = customer;
+		this.user = user;
 		this.scheduledEvent = scheduledEvent;
-	}
-
-	public void accept() {
-		requestStatus = ACCEPTED;
-	}
-
-	public void decline() {
-		requestStatus = DECLINED;
 	}
 
 	public Long getId() {
@@ -62,12 +56,16 @@ public class ParticipateRequest implements Auditable {
 		return requestStatus;
 	}
 
-	public Customer getCustomer() {
-		return customer;
+	public User getUser() {
+		return user;
 	}
 
 	public ScheduledEvent getScheduledEvent() {
 		return scheduledEvent;
+	}
+
+	public void setRequestStatus(RequestStatus requestStatus) {
+		this.requestStatus = requestStatus;
 	}
 
 	@Override
@@ -77,12 +75,12 @@ public class ParticipateRequest implements Auditable {
 		ParticipateRequest that = (ParticipateRequest) o;
 		return Objects.equals(id, that.id) && Objects.equals(message, that.message) &&
 				requestStatus == that.requestStatus &&
-				Objects.equals(customer, that.customer) &&
+				Objects.equals(user, that.user) &&
 				Objects.equals(scheduledEvent, that.scheduledEvent);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id, message, requestStatus, customer, scheduledEvent);
+		return Objects.hash(id, message, requestStatus, user, scheduledEvent);
 	}
 }

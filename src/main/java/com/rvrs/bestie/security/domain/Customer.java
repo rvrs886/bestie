@@ -8,6 +8,8 @@ import org.hibernate.envers.NotAudited;
 
 import java.util.*;
 
+import static com.rvrs.bestie.security.domain.UserType.CUSTOMER;
+
 @Entity
 @Table(name = "customers")
 @Audited
@@ -18,7 +20,7 @@ public class Customer extends User implements Auditable {
 	private byte[] image;
 
 	@NotAudited
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.REMOVE, orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
 	private Set<ParticipateRequest> participateRequests = new HashSet<>();
 
 	public Customer() {
@@ -40,6 +42,11 @@ public class Customer extends User implements Auditable {
 
 	public void addParticipateRequest(ParticipateRequest participateRequest) {
 		this.participateRequests.add(participateRequest);
+	}
+
+	@Override
+	public UserType getUserType() {
+		return CUSTOMER;
 	}
 
 	@Override

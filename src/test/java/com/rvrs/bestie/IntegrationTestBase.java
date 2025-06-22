@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rvrs.bestie.core.participate.repo.ParticipateRequestsRepository;
 import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventRepository;
 import com.rvrs.bestie.core.scheduledevents.service.ScheduledEventService;
+import com.rvrs.bestie.security.domain.CustomUserDetails;
 import com.rvrs.bestie.security.domain.Customer;
 import com.rvrs.bestie.security.domain.User;
 import com.rvrs.bestie.security.repo.UserRepository;
+import com.rvrs.bestie.security.service.UserService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public abstract class IntegrationTestBase {
 
 	@Autowired
 	protected UserRepository userRepository;
+
+	@Autowired
+	protected UserService userService;
 
 	@Autowired
 	protected ScheduledEventRepository scheduledEventRepository;
@@ -78,7 +83,9 @@ public abstract class IntegrationTestBase {
 	private void setupSecurityContext() {
 		User user = userRepository.save(new Customer("testuser", "testuser", null, null));
 
-		Authentication authentication = new UsernamePasswordAuthenticationToken(user, List.of());
+		CustomUserDetails userDetails = new CustomUserDetails(user);
+
+		Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, List.of());
 
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 	}

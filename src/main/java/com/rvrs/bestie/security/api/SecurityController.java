@@ -1,10 +1,12 @@
 package com.rvrs.bestie.security.api;
 
+import com.rvrs.bestie.security.domain.LoggedUserData;
 import com.rvrs.bestie.security.domain.User;
 import com.rvrs.bestie.security.dto.LoginDto;
+import com.rvrs.bestie.security.exception.NotAuthenticatedException;
 import com.rvrs.bestie.security.repo.UserRepository;
 import com.rvrs.bestie.security.service.SecurityService;
-import com.rvrs.bestie.security.util.SecurityUtils;
+import com.rvrs.bestie.security.util.SecurityContextUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
@@ -31,13 +33,12 @@ public class SecurityController {
 	}
 
 	@GetMapping("/current-user")
-	public User getCurrentUser() {
-		User user = SecurityUtils.getCurrentUser().getUser();
-		return userRepository.findByUsername(user.getUsername())
-				.orElseThrow(IllegalArgumentException::new);
+	public LoggedUserData getCurrentUser() {
+		User user = SecurityContextUtils.getCurrentAuthentication().getUser();
+		return LoggedUserData.of(user);
 	}
 
-	@ExceptionHandler(IllegalArgumentException.class)
+	@ExceptionHandler(NotAuthenticatedException.class)
 	@ResponseStatus(HttpStatus.UNAUTHORIZED)
 	public void handleIllegalArgumentException(IllegalArgumentException ex) {
 		log.warn("Invalid username or password: {}", ex.getMessage());

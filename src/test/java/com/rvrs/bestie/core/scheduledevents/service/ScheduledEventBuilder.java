@@ -6,6 +6,7 @@ import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventMetadata;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventType;
 import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventRepository;
+import com.rvrs.bestie.security.domain.User;
 
 import java.time.LocalDateTime;
 
@@ -19,6 +20,7 @@ public class ScheduledEventBuilder {
 	private Integer participantsCount;
 	private Integer maximumAge;
 	private Integer minimumAge;
+	private User user;
 
 	public static ScheduledEventBuilder scheduledEventBuilder() {
 		return new ScheduledEventBuilder();
@@ -64,6 +66,11 @@ public class ScheduledEventBuilder {
 		return this;
 	}
 
+	public ScheduledEventBuilder withUser(User user) {
+		this.user = user;
+		return this;
+	}
+
 	public ScheduledEvent build() {
 		ScheduledEventMetadata scheduledEventMetadata = new ScheduledEventMetadata(
 				participantsCount,
@@ -79,7 +86,8 @@ public class ScheduledEventBuilder {
 				scheduledEventMetadata
 		);
 		return new ScheduledEvent(
-				scheduledEventData
+				scheduledEventData,
+				user
 		);
 	}
 
@@ -99,7 +107,8 @@ public class ScheduledEventBuilder {
 		);
 		return scheduledEventRepository.save(
 				new ScheduledEvent(
-						scheduledEventData
+						scheduledEventData,
+						user
 				)
 		);
 	}

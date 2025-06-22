@@ -5,8 +5,7 @@ import com.rvrs.bestie.core.participate.domain.ParticipateRequest;
 import com.rvrs.bestie.core.scheduledevents.domain.Location;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventType;
-import com.rvrs.bestie.security.domain.Customer;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.rvrs.bestie.security.util.SecurityContextUtils;
 
 import java.time.LocalDateTime;
 
@@ -23,6 +22,7 @@ public class CoreFunctionalityTestBase extends IntegrationTestBase {
 				.withLocation(testLocation())
 				.withMaximumAge(50)
 				.withMinimumAge(18)
+				.withUser(SecurityContextUtils.getCurrentAuthentication().getUser())
 				.build(scheduledEventRepository);
 	}
 
@@ -40,7 +40,7 @@ public class CoreFunctionalityTestBase extends IntegrationTestBase {
 		return participateRequestsRepository.save(
 				new ParticipateRequest(
 						"test message",
-						(Customer) SecurityContextHolder.getContext().getAuthentication().getPrincipal(),
+						SecurityContextUtils.getCurrentAuthentication().getUser(),
 						scheduledEvent
 				)
 		);

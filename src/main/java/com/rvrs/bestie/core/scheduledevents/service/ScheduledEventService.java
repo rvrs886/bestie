@@ -6,11 +6,9 @@ import com.rvrs.bestie.core.participate.repo.ParticipateRequestsRepository;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventData;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
 import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventRepository;
-import com.rvrs.bestie.security.domain.Customer;
-import com.rvrs.bestie.security.util.SecurityUtils;
-import com.rvrs.bestie.util.Clock;
+import com.rvrs.bestie.security.domain.User;
+import com.rvrs.bestie.security.util.SecurityContextUtils;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -39,7 +37,8 @@ public class ScheduledEventService {
 	}
 
 	public void createScheduledEvent(ScheduledEventData scheduledEventData) {
-		ScheduledEvent scheduledEvent = new ScheduledEvent(scheduledEventData);
+		User user = SecurityContextUtils.getCurrentAuthentication().getUser();
+		ScheduledEvent scheduledEvent = new ScheduledEvent(scheduledEventData, user);
 		scheduledEventRepository.save(scheduledEvent);
 	}
 
@@ -54,7 +53,7 @@ public class ScheduledEventService {
 
 		ParticipateRequest participateRequest = new ParticipateRequest(
 				participateRequestDto.message(),
-				(Customer) SecurityUtils.getCurrentUser().getUser(),
+				SecurityContextUtils.getCurrentAuthentication().getUser(),
 				scheduledEvent
 		);
 

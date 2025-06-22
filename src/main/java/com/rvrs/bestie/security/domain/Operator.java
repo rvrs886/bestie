@@ -6,6 +6,8 @@ import org.hibernate.envers.Audited;
 
 import java.util.Objects;
 
+import static com.rvrs.bestie.security.domain.UserType.OPERATOR;
+
 @Entity
 @Table(name = "opeartors")
 @Audited
@@ -22,6 +24,11 @@ public class Operator extends User {
 
 	public Long getAccessLevel() {
 		return accessLevel;
+	}
+
+	@Override
+	public UserType getUserType() {
+		return OPERATOR;
 	}
 
 	@Override

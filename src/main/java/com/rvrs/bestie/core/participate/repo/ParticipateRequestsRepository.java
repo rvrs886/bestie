@@ -9,6 +9,6 @@ import java.util.UUID;
 
 public interface ParticipateRequestsRepository extends JpaRepository<ParticipateRequest, Long> {
 
-	Page<ParticipateRequest> findParticipateRequestsByCustomer_Id(UUID customerId, Pageable pageable);
+	Page<ParticipateRequest> findParticipateRequestsByUser_Id(UUID customerId, Pageable pageable);
 
 }

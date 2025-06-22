@@ -7,6 +7,9 @@ import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventData;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
 import com.rvrs.bestie.core.scheduledevents.repo.ScheduledEventRepository;
 import com.rvrs.bestie.core.scheduledevents.service.ScheduledEventService;
+import com.rvrs.bestie.security.domain.User;
+import com.rvrs.bestie.security.repo.UserRepository;
+import com.rvrs.bestie.security.service.UserService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.validation.Valid;
@@ -27,15 +30,18 @@ public class ScheduledEventController {
 
 	@PersistenceContext
 	protected final EntityManager entityManager;
+	private final UserRepository userRepository;
 
 	public ScheduledEventController(ScheduledEventRepository scheduledEventRepository,
 	                                ScheduledEventService scheduledEventService,
 	                                AuditService auditService,
-	                                EntityManager entityManager) {
+	                                EntityManager entityManager,
+	                                UserRepository userRepository) {
 		this.scheduledEventRepository = scheduledEventRepository;
 		this.scheduledEventService = scheduledEventService;
 		this.auditService = auditService;
 		this.entityManager = entityManager;
+		this.userRepository = userRepository;
 	}
 
 	@GetMapping
@@ -46,6 +52,14 @@ public class ScheduledEventController {
 	@GetMapping("/{id}")
 	public ScheduledEvent getScheduledEvent(@PathVariable UUID id) {
 		return scheduledEventService.getScheduledEventById(id);
+	}
+
+	@PutMapping("/{id}/owners")
+	public void updateOwners(@PathVariable UUID id, @RequestBody List<UUID> ownerCandidates) {
+		ScheduledEvent scheduledEvent = scheduledEventService.getScheduledEventById(id);
+		List<User> owners = userRepository.findAllById(ownerCandidates);
+		scheduledEvent.setOwners(owners);
+		scheduledEventRepository.save(scheduledEvent);
 	}
 
 	@PostMapping

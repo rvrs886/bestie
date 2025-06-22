@@ -5,6 +5,7 @@ import com.rvrs.bestie.core.participate.dto.ParticipateRequestDto;
 import com.rvrs.bestie.core.scheduledevents.domain.Location;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEvent;
 import com.rvrs.bestie.core.scheduledevents.domain.ScheduledEventType;
+import com.rvrs.bestie.security.util.SecurityContextUtils;
 import org.junit.jupiter.api.Test;
 
 import static com.rvrs.bestie.core.participate.domain.RequestStatus.PENDING;
@@ -58,6 +59,7 @@ class ScheduledEventServiceTest extends CoreFunctionalityTestBase {
 				.withLocation(location)
 				.withScheduledDateTime(of(2024, 9, 8, 12, 0))
 				.withType(ScheduledEventType.ENTERTAINMENT)
+				.withUser(SecurityContextUtils.getCurrentAuthentication().getUser())
 				.build();
 
 	}

@@ -2,7 +2,10 @@ package com.rvrs.bestie.core.scheduledevents.domain;
 
 import com.rvrs.bestie.core.audit.domain.Auditable;
 import com.rvrs.bestie.core.participate.domain.ParticipateRequest;
+import com.rvrs.bestie.security.domain.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 
@@ -24,11 +27,18 @@ public class ScheduledEvent implements Auditable {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "scheduledEvent", cascade = CascadeType.REMOVE)
 	private List<ParticipateRequest> participateRequests = new ArrayList<>();
 
+	@NotAudited
+	@NotEmpty
+	@Size(max = 3)
+	@ManyToMany(fetch = FetchType.LAZY)
+	private List<User> owners;
+
 	public ScheduledEvent() {
 	}
 
-	public ScheduledEvent(ScheduledEventData scheduledEventData) {
+	public ScheduledEvent(ScheduledEventData scheduledEventData, User... owners) {
 		this.scheduledEventData = scheduledEventData;
+		this.owners = List.of(owners);
 	}
 
 	public UUID getId() {
@@ -43,8 +53,20 @@ public class ScheduledEvent implements Auditable {
 		return participateRequests;
 	}
 
+	public List<User> getOwners() {
+		return owners;
+	}
+
 	public void updateScheduledData(ScheduledEventData scheduledEventData) {
 		this.scheduledEventData = scheduledEventData;
+	}
+
+	public void setOwners(List<User> owners) {
+		this.owners = owners;
+	}
+
+	public boolean isOwner(User user) {
+		return this.owners.stream().map(User::getId).toList().contains(user.getId());
 	}
 
 	@Override

@@ -123,7 +123,7 @@ class ScheduledEventControllerTest extends CoreFunctionalityTestBase {
 					.isNotNull();
 			assertThat(updatedEventWithParticipateRequest.getParticipateRequests().getFirst().getRequestStatus())
 					.isEqualTo(RequestStatus.PENDING);
-			assertThat(updatedEventWithParticipateRequest.getParticipateRequests().getFirst().getCustomer())
+			assertThat(updatedEventWithParticipateRequest.getParticipateRequests().getFirst().getUser())
 					.isNotNull();
 		});
 	}

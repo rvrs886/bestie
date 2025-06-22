@@ -32,12 +32,12 @@ class ParticipateRequestControllerTest extends CoreFunctionalityTestBase {
 				.andExpect(jsonPath("$.content[0].id").value(request1.getId()))
 				.andExpect(jsonPath("$.content[0].message").value(request1.getMessage()))
 				.andExpect(jsonPath("$.content[0].requestStatus").value(request1.getRequestStatus().toString()))
-				.andExpect(jsonPath("$.content[0].customer").exists())
+				.andExpect(jsonPath("$.content[0].user").exists())
 				.andExpect(jsonPath("$.content[0].scheduledEvent.id").value(event.getId().toString()))
 				.andExpect(jsonPath("$.content[1].id").value(request2.getId()))
 				.andExpect(jsonPath("$.content[1].message").value(request2.getMessage()))
 				.andExpect(jsonPath("$.content[1].requestStatus").value(request2.getRequestStatus().toString()))
-				.andExpect(jsonPath("$.content[1].customer").exists())
+				.andExpect(jsonPath("$.content[1].user").exists())
 				.andExpect(jsonPath("$.content[1].scheduledEvent.id").value(event.getId().toString()))
 				.andExpect(jsonPath("$.content[2]").doesNotExist());
 	}
