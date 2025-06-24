@@ -1,6 +1,8 @@
 package com.rvrs.bestie.security.exception;
 
-public class NotAuthenticatedException extends RuntimeException {
+import com.rvrs.bestie.util.BestieException;
+
+public class NotAuthenticatedException extends BestieException {
 
 	public final String ERROR_CODE = "NOT_AUTHENTICATED";
 

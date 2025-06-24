@@ -1,6 +1,8 @@
 package com.rvrs.bestie.security.exception;
 
-public class UserNotFoundException extends RuntimeException {
+import com.rvrs.bestie.util.BestieException;
+
+public class UserNotFoundException extends BestieException {
 
 	public final String ERROR_CODE = "USER_NOT_FOUND";
 
